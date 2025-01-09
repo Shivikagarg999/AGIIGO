@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bid and Buy - eCommerce</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        /* Header styles */
+        header {
+            background-color: #00457c;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Search bar */
+        .search-bar {
+            margin-top: 20px;
+            text-align: center;
+            margin-bottom: 30px; /* Added gap after the search bar */
+        }
+
+        .search-bar input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            border-radius: 25px;
+            border: 2px solid #00457c;
+            font-size: 1rem;
+        }
+
+        .search-bar button {
+            padding: 10px 20px;
+            background-color: #00457c;
+            color: white;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-left: 10px;
+        }
+
+        .search-bar button:hover {
+            background-color: #e55347;
+        }
+
+        /* Hero Section styles */
+        .hero {
+            background: url('https://i.imgur.com/vo15B5z.jpeg') no-repeat center center/cover;
+            color: black;
+            text-align: center;
+            padding: 120px 20px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 2rem;
+            color: black;
+            font-weight: bold;
+        }
+
+        .hero .cta-button {
+            padding: 12px 30px;
+            background-color: #ff6347;
+            color: white;
+            font-size: 1.2rem;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-top: 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .hero .cta-button:hover {
+            background-color: #e55347;
+        }
+
+        /* Categories Section */
+        .categories-section {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .categories-section h1 {
+            margin-bottom: 30px;
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: space-around;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .category-card {
+            text-align: center;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px; /* Make sure cards have rounded corners */
+            padding: 20px;
+            width: 200px; /* Ensure card width is fixed */
+            height: auto; /* Ensure height adjusts to content */
+            overflow: hidden; /* Prevent content from leaking */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .category-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .category-card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Featured Products Section */
+        .products-section {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 40px 10px;
+            background-color: #fff;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 23%;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-card h3 {
+            margin: 10px 0;
+        }
+
+        .product-card p {
+            color: #555;
+            font-size: 1rem;
+        }
+
+        .product-card .price {
+            color: #ff6347;
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: #00457c;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        footer a {
+            color: #ff6347;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-links {
+            margin-top: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .product-card {
+                width: 48%; /* Make product cards fit for medium screens */
+            }
+
+            .category-card {
+                width: 45%; /* Adjust category card width for medium screens */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-card {
+                width: 48%; /* Make product cards fit for small screens */
+            }
+
+            .category-card {
+                width: 45%; /* Adjust category card width for smaller screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-card {
+                width: 100%; /* Make product cards stack for very small screens */
+            }
+
+            .category-card {
+                width: 100%; /* Make category cards stack for very small screens */
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>AGIIGO</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/shop">Shop</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Search Bar -->
+    <section class="search-bar">
+        <input type="text" placeholder="Search for products...">
+        <button>Search</button>
+    </section>
+
+    <!-- Hero Section (Banner) -->
+    <section class="hero">
+        <h1>Welcome to AGIIGO-Bid and Buy</h1>
+        <p>Your one-stop shop for everything</p>
+        <a href="/shop" class="cta-button">Shop Now</a>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+        <h1>Explore Popular Categories</h1>
+        <div class="cards">
+            <div class="category-card">
+                <img src="https://i.imgur.com/qGjJhKE.jpeg" alt="Electronics">
+                <h3>Electronics</h3>
+                <p>Latest gadgets and devices</p>
+            </div>
+            <div class="category-card">
+                <img src="https://i.imgur.com/E11iXN4.jpeg" alt="Fashion">
+                <h3>Fashion</h3>
+                <p>Trending styles and clothing</p>
+            </div>
+            <div class="category-card">
+                <img src="https://i.imgur.com/RwFeHDB.jpeg" alt="Home">
+                <h3>Home</h3>
+                <p>Furniture and decor items</p>
+            </div>
+            <div class="category-card">
+                <img src="https://i.imgur.com/WQvUtLg.jpeg" alt="Toys">
+                <h3>Toys</h3>
+                <p>Fun for all ages</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section class="products-section">
+        <div class="product-card">
+            <img src="https://via.placeholder.com/250" alt="Product 1">
+            <h3>Product 1</h3>
+            <p>High-quality gadget</p>
+            <p class="price">$199.99</p>
+            <a href="/product/1" class="cta-button">View Details</a>
+        </div>
+
+        <div class="product-card">
+            <img src="https://via.placeholder.com/250" alt="Product 2">
+            <h3>Product 2</h3>
+            <p>Stylish fashion item</p>
+            <p class="price">$129.99</p>
+            <a href="/product/2" class="cta-button">View Details</a>
+        </div>
+
+        <div class="product-card">
+            <img src="https://via.placeholder.com/250" alt="Product 3">
+            <h3>Product 3</h3>
+            <p>Comfortable home furniture</p>
+            <p class="price">$89.99</p>
+            <a href="/product/3" class="cta-button">View Details</a>
+        </div>
+
+        <div class="product-card">
+            <img src="https://via.placeholder.com/250" alt="Product 4">
+            <h3>Product 4</h3>
+            <p>Fun toy for kids</p>
+            <p class="price">$49.99</p>
+            <a href="/product/4" class="cta-button">View Details</a>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2025 Bid and Buy, Inc. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
+            <a href="https://www.facebook.com" target="_blank">Facebook</a>
+            <a href="https://www.instagram.com" target="_blank">Instagram</a>
+            <a href="https://www.twitter.com" target="_blank">Twitter</a>
+        </div>
+    </footer>
+
+</body>
+
+</html>
