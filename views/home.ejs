@@ -4,359 +4,356 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bid and Buy - eCommerce</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>AGIIGO</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
     <style>
-        /* Global styles */
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
             background-color: #f5f5f5;
-        }
-
-        /* Header styles */
-        header {
-            background-color: #00457c;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-        }
-
-        nav ul {
-            list-style-type: none;
-            padding: 0;
             margin: 0;
+            padding: 0;
         }
 
-        nav ul li {
-            display: inline;
-            margin: 0 20px;
+        .navbar {
+            background-color: rgb(0, 176, 189);
         }
 
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
+        .navbar a {
+            color: white !important;
         }
 
-        nav ul li a:hover {
-            text-decoration: underline;
+        .navbar .form-control {
+            border-radius: 20px;
         }
 
-        /* Search bar */
-        .search-bar {
-            margin-top: 20px;
-            text-align: center;
-            margin-bottom: 30px; /* Added gap after the search bar */
-        }
-
-        .search-bar input[type="text"] {
-            padding: 10px;
-            width: 300px;
-            border-radius: 25px;
-            border: 2px solid #00457c;
-            font-size: 1rem;
-        }
-
-        .search-bar button {
-            padding: 10px 20px;
-            background-color: #00457c;
-            color: white;
-            border-radius: 25px;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            margin-left: 10px;
-        }
-
-        .search-bar button:hover {
-            background-color: #e55347;
-        }
-
-        /* Hero Section styles */
-        .hero {
-            background: url('https://i.imgur.com/vo15B5z.jpeg') no-repeat center center/cover;
+        .hero-section {
+            background: url('https://i.imgur.com/o0ZgPMN.jpeg') no-repeat center center/cover;
             color: black;
             text-align: center;
-            padding: 120px 20px;
+            padding: 100px 20px;
         }
 
-        .hero h1 {
+        .hero-section h1 {
             font-size: 3rem;
-            margin-bottom: 20px;
-        }
-
-        .hero p {
-            font-size: 2rem;
-            color: black;
             font-weight: bold;
         }
 
-        .hero .cta-button {
-            padding: 12px 30px;
-            background-color: #ff6347;
-            color: white;
+        .hero-section p {
             font-size: 1.2rem;
-            border: none;
-            cursor: pointer;
-            text-transform: uppercase;
-            margin-top: 20px;
-            text-decoration: none;
-            border-radius: 5px;
         }
 
-        .hero .cta-button:hover {
-            background-color: #e55347;
+        .hero-section .btn {
+            background-color: rgb(0, 224, 240);
+            color: #00274D;
+            font-weight: bold;
         }
+        .category-section {
+        background-color: #ffffff;
+        padding: 40px 20px;
+    }
 
-        /* Categories Section */
-        .categories-section {
-            text-align: center;
-            padding: 40px 20px;
-        }
+    .category-section h2 {
+        color: #00274D;
+        text-align: center;
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 30px;
+    }
 
-        .categories-section h1 {
-            margin-bottom: 30px;
-            font-size: 2rem;
-            color: #333;
-        }
+    .categories-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
 
-        .cards {
-            display: flex;
-            justify-content: space-around;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
+    .categories {
+        display: flex;
+        gap: 20px;
+        overflow: hidden;
+        scroll-behavior: smooth;
+        width: 100%;
+    }
 
-        .category-card {
-            text-align: center;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px; /* Make sure cards have rounded corners */
-            padding: 20px;
-            width: 200px; /* Ensure card width is fixed */
-            height: auto; /* Ensure height adjusts to content */
-            overflow: hidden; /* Prevent content from leaking */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+    .category-card {
+        flex: 0 0 auto;
+        width: 150px;
+        border-radius: 10px;
+        text-align: center;
+        padding: 10px;
+        transition: transform 0.3s;
+    }
 
-        .category-card img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
+    .category-card:hover {
+        transform: scale(1.1);
+    }
 
-        .category-card:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
+    .category-card img {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
 
-        /* Featured Products Section */
+    .category-card h5 {
+        margin-top: 10px;
+        color: #00274D;
+        font-size: 1rem;
+    }
+
+    .scroll-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: #00274D;
+        color: #ffffff;
+        border: none;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+    }
+
+    .scroll-btn.left {
+        left: 10px;
+    }
+
+    .scroll-btn.right {
+        right: 10px;
+    }
+
+    .scroll-btn:hover {
+        background-color: #0056b3;
+    }
         .products-section {
+            padding: 50px 20px;
+        }
+
+        .products-section h2 {
+            color: #00274D;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .product-list {
             display: flex;
-            justify-content: space-between;
             flex-wrap: wrap;
-            padding: 40px 10px;
-            background-color: #fff;
+            gap: 20px;
+            justify-content: center;
         }
 
         .product-card {
+            flex: 1 1 calc(33.33% - 20px);
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 23%;
-            margin-bottom: 20px;
-            text-align: center;
             padding: 15px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
         }
 
         .product-card img {
             width: 100%;
-            height: auto;
+            height: 200px;
+            object-fit: cover;
             border-radius: 8px;
-            transition: transform 0.3s ease;
         }
 
-        .product-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .product-card h3 {
-            margin: 10px 0;
+        .product-card h5 {
+            margin-top: 10px;
+            color: #00274D;
         }
 
         .product-card p {
             color: #555;
-            font-size: 1rem;
         }
 
-        .product-card .price {
-            color: #ff6347;
-            font-size: 1.2rem;
-            margin-top: 10px;
-        }
-
-        /* Footer styles */
-        footer {
-            background-color: #00457c;
+        .footer {
+            background-color: #343a40;
             color: white;
-            padding: 20px 0;
-            text-align: center;
+            padding: 50px 20px;
         }
 
-        footer a {
-            color: #ff6347;
-            text-decoration: none;
-            margin-left: 10px;
+        .footer a {
+            color: rgb(0, 224, 240);
         }
 
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        .footer-links {
-            margin-top: 20px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .product-card {
-                width: 48%; /* Make product cards fit for medium screens */
-            }
-
-            .category-card {
-                width: 45%; /* Adjust category card width for medium screens */
-            }
-        }
-
-        @media (max-width: 768px) {
-            .product-card {
-                width: 48%; /* Make product cards fit for small screens */
-            }
-
-            .category-card {
-                width: 45%; /* Adjust category card width for smaller screens */
-            }
-        }
-
-        @media (max-width: 480px) {
-            .product-card {
-                width: 100%; /* Make product cards stack for very small screens */
-            }
-
-            .category-card {
-                width: 100%; /* Make category cards stack for very small screens */
-            }
+        .footer h5 {
+            font-weight: bold;
         }
     </style>
 </head>
 
 <body>
 
-    <header>
-        <h1>AGIIGO</h1>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/shop">Shop</a></li>
-                <li><a href="/about">About Us</a></li>
-                <li><a href="/contact">Contact</a></li>
-                <li><a href="/login">Login</a></li>
-            </ul>
-        </nav>
-    </header>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg ">
+        <div class="container">
+            <a class="navbar-brand" href="#">AGIIGO</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#categories">Categories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
+                </ul>
+                <form class="d-flex ms-3 align-items-center">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-warning me-3" type="submit"><i class="fas fa-search"></i></button>
+                    <a href="#cart" class="btn btn-outline-light position-relative">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            3
+                            <span class="visually-hidden">unread messages</span>
+                        </span>
+                    </a>
+                </form>
+            </div>
+        </div>
+    </nav>
+    
 
-    <!-- Search Bar -->
-    <section class="search-bar">
-        <input type="text" placeholder="Search for products...">
-        <button>Search</button>
-    </section>
-
-    <!-- Hero Section (Banner) -->
-    <section class="hero">
-        <h1>Welcome to AGIIGO-Bid and Buy</h1>
-        <p>Your one-stop shop for everything</p>
-        <a href="/shop" class="cta-button">Shop Now</a>
-    </section>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <h1>Discover Amazing Deals</h1>
+            <p>Shop from a wide range of categories at unbeatable prices.</p>
+            <a href="#shop" class="btn btn-lg">Start Shopping</a>
+        </div>
+    </div>
 
     <!-- Categories Section -->
-    <section class="categories-section">
-        <h1>Explore Popular Categories</h1>
-        <div class="cards">
-            <div class="category-card">
-                <img src="https://i.imgur.com/qGjJhKE.jpeg" alt="Electronics">
-                <h3>Electronics</h3>
-                <p>Latest gadgets and devices</p>
-            </div>
-            <div class="category-card">
-                <img src="https://i.imgur.com/E11iXN4.jpeg" alt="Fashion">
-                <h3>Fashion</h3>
-                <p>Trending styles and clothing</p>
-            </div>
-            <div class="category-card">
-                <img src="https://i.imgur.com/RwFeHDB.jpeg" alt="Home">
-                <h3>Home</h3>
-                <p>Furniture and decor items</p>
-            </div>
-            <div class="category-card">
-                <img src="https://i.imgur.com/WQvUtLg.jpeg" alt="Toys">
-                <h3>Toys</h3>
-                <p>Fun for all ages</p>
+    <section class="category-section" id="categories">
+        <div class="container">
+            <h2>Shop by Categories</h2>
+            <div class="categories-wrapper">
+                <button class="scroll-btn left" onclick="scrollCategories('left')">&lt;</button>
+                <div class="categories">
+                    <div class="category-card">
+                        <img src="https://i.imgur.com/JHzZ1wu.jpeg" alt="Electronics">
+                        <h5>Electronics</h5>
+                    </div>
+                    <div class="category-card">
+                        <img src="https://i.imgur.com/Y9xFRCV.jpeg" alt="Fashion">
+                        <h5>Fashion</h5>
+                    </div>
+                    <div class="category-card">
+                        <img src="https://i.pinimg.com/236x/14/ef/a0/14efa01bdf95649ecb69720f8c2fa214.jpg" alt="Groceries">
+                        <h5>Groceries</h5>
+                    </div>
+                    <div class="category-card">
+                        <img src="https://i.pinimg.com/236x/9c/9c/9a/9c9c9af5b47d23db3ee71fbc32575dd3.jpg" alt="Home Appliances">
+                        <h5>Home Appliances</h5>
+                    </div>
+                    <div class="category-card">
+                        <img src="https://i.pinimg.com/236x/f6/79/7b/f6797ba92d27b96e4edba6e4f1430e58.jpg" alt="Furniture">
+                        <h5>Furniture</h5>
+                    </div>
+                    <div class="category-card">
+                        <img src="https://i.pinimg.com/236x/92/08/25/92082556ec2d9be5f6603e586bdaefa6.jpg" alt="Beauty Products">
+                        <h5>Beauty Products</h5>
+                    </div>
+                    <div class="category-card">
+                        <img src="https://i.pinimg.com/474x/94/39/fe/9439fe55a71f703263f68590ed6d33fe.jpg" alt="Books">
+                        <h5>Books</h5>
+                    </div>
+                    <div class="category-card">
+                        <img src="https://i.pinimg.com/236x/95/eb/31/95eb311980d9d95e7ae52f0a737e775b.jpg" alt="Toys">
+                        <h5>Toys</h5>
+                    </div>
+                </div>
+                <button class="scroll-btn right" onclick="scrollCategories('right')">&gt;</button>
             </div>
         </div>
     </section>
+    
 
-    <!-- Featured Products Section -->
-    <section class="products-section">
-        <div class="product-card">
-            <img src="https://via.placeholder.com/250" alt="Product 1">
-            <h3>Product 1</h3>
-            <p>High-quality gadget</p>
-            <p class="price">$199.99</p>
-            <a href="/product/1" class="cta-button">View Details</a>
+    <!-- Products Section -->
+  <!-- Products Section -->
+<!-- Products Section -->
+<!-- Products Section -->
+<section class="products-section" id="products">
+    <div class="container">
+        <h2>Featured Products</h2>
+        <div class="product-list">
+            <% products.forEach(product => { %>
+                <div class="product-card">
+                    <img src="<%= product.image %>" alt="<%= product.name %>">
+                    <h5><%= product.name %></h5>
+                    <p><%= product.price %></p>
+                </div>
+            <% }) %>
         </div>
+    </div>
+</section>
 
-        <div class="product-card">
-            <img src="https://via.placeholder.com/250" alt="Product 2">
-            <h3>Product 2</h3>
-            <p>Stylish fashion item</p>
-            <p class="price">$129.99</p>
-            <a href="/product/2" class="cta-button">View Details</a>
-        </div>
 
-        <div class="product-card">
-            <img src="https://via.placeholder.com/250" alt="Product 3">
-            <h3>Product 3</h3>
-            <p>Comfortable home furniture</p>
-            <p class="price">$89.99</p>
-            <a href="/product/3" class="cta-button">View Details</a>
-        </div>
 
-        <div class="product-card">
-            <img src="https://via.placeholder.com/250" alt="Product 4">
-            <h3>Product 4</h3>
-            <p>Fun toy for kids</p>
-            <p class="price">$49.99</p>
-            <a href="/product/4" class="cta-button">View Details</a>
-        </div>
-    </section>
 
-    <!-- Footer Section -->
-    <footer>
-        <p>&copy; 2025 Bid and Buy, Inc. All rights reserved.</p>
-        <div class="footer-links">
-            <a href="/privacy">Privacy Policy</a>
-            <a href="/terms">Terms of Service</a>
-            <a href="https://www.facebook.com" target="_blank">Facebook</a>
-            <a href="https://www.instagram.com" target="_blank">Instagram</a>
-            <a href="https://www.twitter.com" target="_blank">Twitter</a>
+    <!-- Footer -->
+    <footer class="footer py-4 bg-dark text-light">
+        <div class="container">
+            <div class="row">
+                <!-- About Section -->
+                <div class="col-md-4 mb-3">
+                    <h5>About Us</h5>
+                    <p class="small">Modern Store is your one-stop shop for the latest products in categories ranging from electronics to fashion. Experience quality and convenience like never before.</p>
+                </div>
+                <!-- Quick Links Section -->
+                <div class="col-md-4 mb-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#categories" class="text-light text-decoration-none">Categories</a></li>
+                        <li><a href="#products" class="text-light text-decoration-none">Products</a></li>
+                        <li><a href="#trending" class="text-light text-decoration-none">Trending</a></li>
+                        <li><a href="#sales" class="text-light text-decoration-none">Sales</a></li>
+                    </ul>
+                </div>
+                <!-- Contact Section -->
+                <div class="col-md-4 mb-3">
+                    <h5>Contact Us</h5>
+                    <p class="small mb-1"><i class="fas fa-envelope me-2"></i>support@modernstore.com</p>
+                    <p class="small mb-1"><i class="fas fa-phone-alt me-2"></i>+1 123-456-7890</p>
+                    <p class="small"><i class="fas fa-map-marker-alt me-2"></i>123 Modern Street, New York, NY</p>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center small">
+                <p>© 2025 AGIIGO. All rights reserved.</p>
+            </div>
         </div>
     </footer>
+    >
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function scrollCategories(direction) {
+            const container = document.querySelector('.categories');
+            const scrollAmount = 200; // Adjust scroll amount
+            if (direction === 'left') {
+                container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            } else {
+                container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            }
+        }
+    </script>
+    
 </body>
 
 </html>
