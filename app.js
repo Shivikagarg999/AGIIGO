@@ -2,16 +2,16 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
-const Product= require('./models/product')
+// const Product= require('./models/product')
 
 // Initialize Express App
 const app = express();
 
 // Connect to MongoDB
-mongoose
-  .connect('mongodb://localhost:27017/agiigo', { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB Connected'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+// mongoose
+//   .connect('mongodb://localhost:27017/agiigo', { useNewUrlParser: true, useUnifiedTopology: true })
+//   .then(() => console.log('MongoDB Connected'))
+//   .catch((err) => console.error('MongoDB connection error:', err));
 
 // View Engine Setup
 app.set('view engine', 'ejs');
@@ -34,7 +34,7 @@ app.use(
 // Home Page
 app.get('/', async (req, res) => {
   try {
-    const products = await Product.find(); // Fetch all products
+    // const products = await Product.find(); 
     res.render('home');
   } catch (error) {
     console.error('Error fetching products:', error);
