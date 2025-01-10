@@ -132,54 +132,201 @@
     .scroll-btn:hover {
         background-color: #0056b3;
     }
-        .products-section {
-            padding: 50px 20px;
-        }
+    .products-section {
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+  position: relative;
+}
 
-        .products-section h2 {
-            color: #00274D;
-            text-align: center;
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 30px;
-        }
+.products-section .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
 
-        .product-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
+h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
 
-        .product-card {
-            flex: 1 1 calc(33.33% - 20px);
-            background-color: white;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
-        }
+/* Horizontal Scroll Wrapper */
+.products-wrapper {
+  overflow-x: auto; /* Enable horizontal scrolling */
+  white-space: nowrap; /* Ensure items are displayed in a single row */
+  display: flex;
+  gap: 20px;
+  padding: 10px 0;
+  scroll-behavior: smooth; /* Smooth scrolling for JS control */
+}
 
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
+/* Grid Items */
+.products-grid {
+  display: flex;
+  gap: 20px;
+}
 
-        .product-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
+.product-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 250px;
+  flex-shrink: 0; /* Prevent shrinking */
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
 
-        .product-card h5 {
-            margin-top: 10px;
-            color: #00274D;
-        }
+.product-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
 
-        .product-card p {
-            color: #555;
-        }
+/* Scroll Arrows */
+.scroll-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgb(0, 224, 240);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 10;
+}
+
+.scroll-arrow:hover {
+  background-color: rgb(0, 224, 240);
+}
+
+.left-arrow {
+  left: -20px; 
+}
+
+.right-arrow {
+  right: -20px; 
+}
+.trending-products-section {
+  padding: 60px 20px;
+  background-color: #f0f9ff; 
+  text-align: center;
+}
+
+.trending-products-section .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 40px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* Grid Layout */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 30px;
+  padding: 0 20px;
+}
+
+.product-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.product-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.product-card:hover .product-image {
+  opacity: 0.8;
+}
+
+.product-info {
+  padding: 20px;
+  background-color: #fff;
+}
+
+.product-name {
+  font-size: 1.6rem;
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.product-description {
+  font-size: 1rem;
+  color: #7f8c8d;
+  margin-bottom: 15px;
+}
+
+.product-price {
+  font-size: 1.4rem;
+  color: #27ae60;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.product-category {
+  font-size: 1rem;
+  color: #34495e; 
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+}
+  
+.view-all-container {
+  text-align: center; 
+  margin-top: 20px; 
+}
+
+.view-all-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: rgb(0, 224, 240);
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.view-all-link:hover {
+  background-color: rgb(0, 224, 240); 
+}
+
 
         .footer {
             background-color: #343a40;
@@ -211,6 +358,8 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#categories">Categories</a></li>
                     <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/products/add">Add product</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#login">Login</a></li>
                 </ul>
                 <form class="d-flex ms-3 align-items-center">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -227,7 +376,6 @@
         </div>
     </nav>
     
-
     <!-- Hero Section -->
     <div class="hero-section">
         <div class="container">
@@ -281,22 +429,53 @@
             </div>
         </div>
     </section>
-    
-
-    <!-- Products Section -->
-  <!-- Products Section -->
-<!-- Products Section -->
-<!-- Products Section -->
-<section class="products-section" id="products">
-    <div class="container">
-        <h2>Featured Products</h2>
-  
-    </div>
-</section>
-
-
-
-
+    <section class="products-section" id="products">
+        <div class="container">
+          <h2>Products</h2>
+          <button class="scroll-arrow left-arrow" id="scroll-left">←</button>
+          <div class="products-wrapper">
+            <div class="products-grid">
+              <% if (products.length > 0) { %>
+                <% products.forEach(product => { %>
+                  <div class="product-card">
+                    <img src="<%= product.image || '/default-image.jpg' %>" alt="<%= product.name %>" class="product-image">
+                    <h3 class="product-name"><%= product.name %></h3>
+                    <p class="product-description"><%= product.description %></p>
+                    <p class="product-price">$<%= product.price.toFixed(2) %></p>
+                    <p class="product-category">Category: <%= product.category %></p>
+                  </div>
+                <% }); %>
+              <% } else { %>
+                <p>No products available at the moment.</p>
+              <% } %>
+            </div>
+          </div>
+          <button class="scroll-arrow right-arrow" id="scroll-right">→</button>
+        </div>
+        <div class="view-all-container">
+            <a href="/products" class="view-all-link">Browse All Products</a>
+        </div>
+      </section>
+      <section class="trending-products-section" id="trending-products">
+        <div class="container">
+          <h2>Trending Products</h2>
+          <div class="products-grid">
+            <% if (trendingProducts && trendingProducts.length > 0) { %>
+              <% trendingProducts.forEach(product => { %>
+                <div class="product-card">
+                  <img src="<%= product.image || '/default-image.jpg' %>" alt="<%= product.name %>" class="product-image">
+                  <h3 class="product-name"><%= product.name %></h3>
+                  <p class="product-description"><%= product.description %></p>
+                  <p class="product-price">$<%= product.price.toFixed(2) %></p>
+                  <p class="product-category">Category: <%= product.category %></p>
+                </div>
+              <% }); %>
+            <% } else { %>
+              <p>No trending products at the moment.</p>
+            <% } %>
+          </div>
+        </div>
+      </section>        
     <!-- Footer -->
     <footer class="footer py-4 bg-dark text-light">
         <div class="container">
@@ -319,7 +498,7 @@
                 <!-- Contact Section -->
                 <div class="col-md-4 mb-3">
                     <h5>Contact Us</h5>
-                    <p class="small mb-1"><i class="fas fa-envelope me-2"></i>support@modernstore.com</p>
+                    <p class="small mb-1"><i class="fas fa-envelope me-2"></i>support@agiigo.com</p>
                     <p class="small mb-1"><i class="fas fa-phone-alt me-2"></i>+1 123-456-7890</p>
                     <p class="small"><i class="fas fa-map-marker-alt me-2"></i>123 Modern Street, New York, NY</p>
                 </div>
@@ -343,7 +522,25 @@
             } else {
                 container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
             }
-        }
+        }  
+  const scrollLeftButton = document.getElementById('scroll-left');
+  const scrollRightButton = document.getElementById('scroll-right');
+  const productsWrapper = document.querySelector('.products-wrapper');
+
+  scrollLeftButton.addEventListener('click', () => {
+    productsWrapper.scrollBy({
+      left: -300, // Adjust scroll amount
+      behavior: 'smooth',
+    });
+  });
+
+  scrollRightButton.addEventListener('click', () => {
+    productsWrapper.scrollBy({
+      left: 300, // Adjust scroll amount
+      behavior: 'smooth',
+    });
+  });
+
     </script>
     
 </body>
