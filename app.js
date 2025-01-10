@@ -7,7 +7,9 @@ const Product= require('./models/product')
 const app = express();
 
 mongoose
-  .connect('mongodb+srv://agiigo:agiigo123@cluster0.qyodo.mongodb.net/', { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect('mongodb+srv://agiigo:agiigo123@cluster0.qyodo.mongodb.net/', 
+  { useNewUrlParser: true, useUnifiedTopology: true, connectTimeoutMS: 10000, 
+    socketTimeoutMS: 45000})
   .then(() => console.log('MongoDB Connected'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
