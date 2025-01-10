@@ -455,27 +455,7 @@ h2 {
         <div class="view-all-container">
             <a href="/products" class="view-all-link">Browse All Products</a>
         </div>
-      </section>
-      <section class="trending-products-section" id="trending-products">
-        <div class="container">
-          <h2>Trending Products</h2>
-          <div class="products-grid">
-            <% if (trendingProducts && trendingProducts.length > 0) { %>
-              <% trendingProducts.forEach(product => { %>
-                <div class="product-card">
-                  <img src="<%= product.image || '/default-image.jpg' %>" alt="<%= product.name %>" class="product-image">
-                  <h3 class="product-name"><%= product.name %></h3>
-                  <p class="product-description"><%= product.description %></p>
-                  <p class="product-price">$<%= product.price.toFixed(2) %></p>
-                  <p class="product-category">Category: <%= product.category %></p>
-                </div>
-              <% }); %>
-            <% } else { %>
-              <p>No trending products at the moment.</p>
-            <% } %>
-          </div>
-        </div>
-      </section>        
+      </section>       
     <!-- Footer -->
     <footer class="footer py-4 bg-dark text-light">
         <div class="container">

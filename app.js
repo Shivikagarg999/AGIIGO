@@ -27,10 +27,10 @@ app.use(
 app.get('/', async (req, res) => {
   try {
     const products = await Product.find(); 
-    const trendingProducts = await Product.find({ isTrending: true }) 
-    .sort({ createdAt: -1 }) 
-    .limit(5); 
-    res.render('home', { products, trendingProducts });
+    // const trendingProducts = await Product.find({ isTrending: true }) 
+    // .sort({ createdAt: -1 }) 
+    // .limit(5); 
+    res.render('home', { products});
   } catch (error) {
     console.error('Error fetching products:', error);
     res.status(500).send('Internal Server Error');
