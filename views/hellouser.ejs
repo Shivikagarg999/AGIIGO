@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - AGIIGO</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+       body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: rgb(0, 176, 189);
+        }
+
+        .navbar a {
+            color: white !important;
+        }
+
+        .navbar .form-control {
+            border-radius: 20px;
+        }
+
+        .hero-section {
+            background: url('https://i.imgur.com/o0ZgPMN.jpeg') no-repeat center center/cover;
+            color: black;
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+        }
+
+        .hero-section .btn {
+            background-color: rgb(0, 224, 240);
+            color: #00274D;
+            font-weight: bold;
+        }
+        .category-section {
+        background-color: #ffffff;
+        padding: 40px 20px;
+    }
+
+    .category-section h2 {
+        color: #00274D;
+        text-align: center;
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 30px;
+    }
+
+    .categories-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .categories {
+        display: flex;
+        gap: 20px;
+        overflow: hidden;
+        scroll-behavior: smooth;
+        width: 100%;
+    }
+
+    .category-card {
+        flex: 0 0 auto;
+        width: 150px;
+        border-radius: 10px;
+        text-align: center;
+        padding: 10px;
+        transition: transform 0.3s;
+    }
+
+    .category-card:hover {
+        transform: scale(1.1);
+    }
+
+    .category-card img {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .category-card h5 {
+        margin-top: 10px;
+        color: #00274D;
+        font-size: 1rem;
+    }
+
+    .scroll-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: #00274D;
+        color: #ffffff;
+        border: none;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+    }
+
+    .scroll-btn.left {
+        left: 10px;
+    }
+
+    .scroll-btn.right {
+        right: 10px;
+    }
+
+    .scroll-btn:hover {
+        background-color: #0056b3;
+    }
+    .products-section {
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+  /* position: relative; */
+}
+
+.products-section .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+
+.products-wrapper {
+  overflow-x: auto;
+  white-space: nowrap; 
+  display: flex;
+  gap: 20px;
+  padding: 10px 0;
+  scroll-behavior: smooth;
+}
+
+
+.products-grid {
+  display: flex;
+  gap: 20px;
+}
+
+.product-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 250px;
+  flex-shrink: 0; /* Prevent shrinking */
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.product-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Scroll Arrows */
+.scroll-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgb(0, 224, 240);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 10;
+}
+
+.scroll-arrow:hover {
+  background-color: rgb(0, 224, 240);
+}
+
+.left-arrow {
+  left: -20px; 
+}
+
+.right-arrow {
+  right: -20px; 
+}
+.trending-products-section {
+  padding: 60px 20px;
+  background-color: #f0f9ff; 
+  text-align: center;
+}
+
+.trending-products-section .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 40px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* Grid Layout */
+.products-grid {
+  display: flex;
+  gap: 20px;
+  overflow-x: hidden; 
+  white-space: nowrap;
+  padding: 10px 0;
+}
+
+.product-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.product-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.product-card:hover .product-image {
+  opacity: 0.8;
+}
+
+.product-info {
+  padding: 20px;
+  background-color: #fff;
+}
+
+.product-name {
+  font-size: 1.6rem;
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.product-description {
+  font-size: 1rem;
+  color: #7f8c8d;
+  margin-bottom: 15px;
+}
+
+.product-price {
+  font-size: 1.4rem;
+  color: #27ae60;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.product-category {
+  font-size: 1rem;
+  color: #34495e; 
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+}
+  
+.view-all-container {
+  text-align: center; 
+  margin-top: 20px; 
+}
+
+.view-all-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: rgb(0, 224, 240);
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.view-all-link:hover {
+  background-color: rgb(0, 224, 240); 
+}
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 50px 20px;
+        }                                                                                                                                                             
+
+        .footer a {
+            color: rgb(0, 224, 240);
+        }
+
+        .footer h5 {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">AGIIGO</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#categories">Categories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
+                    <% if (user && user.role === 'seller') { %>
+                        <li class="nav-item"><a class="nav-link" href="/products/add">Add Product</a></li>
+                    <% } %>
+                    <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                </ul>
+                <form class="d-flex ms-3 align-items-center">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-warning me-3" type="submit"><i class="fas fa-search"></i></button>
+                    <a href="#cart" class="btn btn-outline-light position-relative">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            3
+                            <span class="visually-hidden">unread messages</span>
+                        </span>
+                    </a>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <h1>Welcome, <%= user.name %>!</h1>
+            <p>Shop from a wide range of categories at unbeatable prices.</p>
+            <a href="#shop" class="btn btn-lg">Start Shopping</a>
+        </div>
+    </div>
+
+    <!-- Products Section -->
+    <section class="products-section" id="products">
+        <div class="container">
+          <button class="scroll-arrow left-arrow" id="scroll-left">←</button>
+            <div class="products-grid">
+              <% if (products.length > 0) { %>
+                <% products.forEach(product => { %>
+                  <div class="product-card">
+                    <img src="<%= product.image || '/default-image.jpg' %>" alt="<%= product.name %>" class="product-image">
+                    <h3 class="product-name"><%= product.name %></h3>
+                    <p class="product-description"><%= product.description %></p>
+                    <p class="product-price">$<%= product.price.toFixed(2) %></p>
+                    <p class="product-category">Category: <%= product.category %></p>
+                  </div>
+                <% }); %>
+              <% } else { %>
+                <p>No products available at the moment.</p>
+              <% } %>
+          </div>
+          <button class="scroll-arrow right-arrow" id="scroll-right">→</button>
+        </div>
+        <div class="view-all-container">
+            <a href="/products" class="view-all-link">Browse All Products</a>
+        </div>
+      </section> 
+    <!-- Footer -->
+    <footer class="footer py-4 bg-dark text-light">
+        <div class="container">
+            <div class="row">
+                <!-- About Section -->
+                <div class="col-md-4 mb-3">
+                    <h5>About Us</h5>
+                    <p class="small">Modern Store is your one-stop shop for the latest products in categories ranging from electronics to fashion. Experience quality and convenience like never before.</p>
+                </div>
+                <!-- Quick Links Section -->
+                <div class="col-md-4 mb-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#categories" class="text-light text-decoration-none">Categories</a></li>
+                        <li><a href="#products" class="text-light text-decoration-none">Products</a></li>
+                        <li><a href="#trending" class="text-light text-decoration-none">Trending</a></li>
+                        <li><a href="#sales" class="text-light text-decoration-none">Sales</a></li>
+                    </ul>
+                </div>
+                <!-- Contact Section -->
+                <div class="col-md-4 mb-3">
+                    <h5>Contact Us</h5>
+                    <p class="small mb-1"><i class="fas fa-envelope me-2"></i>support@agiigo.com</p>
+                    <p class="small mb-1"><i class="fas fa-phone-alt me-2"></i>+1 123-456-7890</p>
+                    <p class="small"><i class="fas fa-map-marker-alt me-2"></i>123 Modern Street, New York, NY</p>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center small">
+                <p>© 2025 AGIIGO. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Scroll Categories function (for categories section)
+      function scrollCategories(direction) {
+          const container = document.querySelector('.categories');
+          const scrollAmount = 200; // Adjust scroll amount
+          if (direction === 'left') {
+              container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+          } else {
+              container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+          }
+      }
+  
+      // Scroll Arrows for Products Section
+      const scrollLeftButton = document.getElementById('scroll-left');
+      const scrollRightButton = document.getElementById('scroll-right');
+      const productsGrid = document.querySelector('.products-grid');  // Changed to 'products-grid'
+  
+      // Left Arrow Scroll
+      scrollLeftButton.addEventListener('click', () => {
+          productsGrid.scrollBy({
+              left: -300, // Adjust scroll amount
+              behavior: 'smooth',
+          });
+      });
+  
+      // Right Arrow Scroll
+      scrollRightButton.addEventListener('click', () => {
+          productsGrid.scrollBy({
+              left: 300, // Adjust scroll amount
+              behavior: 'smooth',
+          });
+      });
+  </script>
+</body>
+
+</html>

@@ -136,9 +136,6 @@
   padding: 40px 20px;
   background-color: #f9f9f9;
   /* position: relative; */
-   display: flex;
-   align-items: center;
-   justify-content: center;
 }
 
 .products-section .container {
@@ -146,6 +143,7 @@
   margin: 0 auto;
   position: relative;
   display: flex;
+  flex-direction: column;
 }
 
 h2 {
@@ -154,17 +152,17 @@ h2 {
   margin-bottom: 20px;
 }
 
-/* Horizontal Scroll Wrapper */
+
 .products-wrapper {
-  overflow-x: auto; /* Enable horizontal scrolling */
-  white-space: nowrap; /* Ensure items are displayed in a single row */
+  overflow-x: auto;
+  white-space: nowrap; 
   display: flex;
   gap: 20px;
   padding: 10px 0;
-  scroll-behavior: smooth; /* Smooth scrolling for JS control */
+  scroll-behavior: smooth;
 }
 
-/* Grid Items */
+
 .products-grid {
   display: flex;
   gap: 20px;
@@ -243,7 +241,7 @@ h2 {
 .products-grid {
   display: flex;
   gap: 20px;
-  overflow-x: auto; 
+  overflow-x: hidden; 
   white-space: nowrap;
   padding: 10px 0;
 }
@@ -331,13 +329,11 @@ h2 {
 .view-all-link:hover {
   background-color: rgb(0, 224, 240); 
 }
-
-
         .footer {
             background-color: #343a40;
             color: white;
             padding: 50px 20px;
-        }
+        }                                                                                                                                                             
 
         .footer a {
             color: rgb(0, 224, 240);
@@ -363,8 +359,7 @@ h2 {
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#categories">Categories</a></li>
                     <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/products/add">Add product</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#login">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
                 </ul>
                 <form class="d-flex ms-3 align-items-center">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -434,9 +429,9 @@ h2 {
             </div>
         </div>
     </section>
+    <h2>Products</h2>
     <section class="products-section" id="products">
         <div class="container">
-          <h2>Products</h2>
           <button class="scroll-arrow left-arrow" id="scroll-left">←</button>
             <div class="products-grid">
               <% if (products.length > 0) { %>
@@ -492,40 +487,42 @@ h2 {
             </div>
         </div>
     </footer>
-    >
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function scrollCategories(direction) {
-            const container = document.querySelector('.categories');
-            const scrollAmount = 200; // Adjust scroll amount
-            if (direction === 'left') {
-                container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-            } else {
-                container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            }
-        }  
-  const scrollLeftButton = document.getElementById('scroll-left');
-  const scrollRightButton = document.getElementById('scroll-right');
-  const productsWrapper = document.querySelector('.products-wrapper');
-
-  scrollLeftButton.addEventListener('click', () => {
-    productsWrapper.scrollBy({
-      left: -300, // Adjust scroll amount
-      behavior: 'smooth',
-    });
-  });
-
-  scrollRightButton.addEventListener('click', () => {
-    productsWrapper.scrollBy({
-      left: 300, // Adjust scroll amount
-      behavior: 'smooth',
-    });
-  });
-
-    </script>
-    
+      // Scroll Categories function (for categories section)
+      function scrollCategories(direction) {
+          const container = document.querySelector('.categories');
+          const scrollAmount = 200; // Adjust scroll amount
+          if (direction === 'left') {
+              container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+          } else {
+              container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+          }
+      }
+  
+      // Scroll Arrows for Products Section
+      const scrollLeftButton = document.getElementById('scroll-left');
+      const scrollRightButton = document.getElementById('scroll-right');
+      const productsGrid = document.querySelector('.products-grid');  // Changed to 'products-grid'
+  
+      // Left Arrow Scroll
+      scrollLeftButton.addEventListener('click', () => {
+          productsGrid.scrollBy({
+              left: -300, // Adjust scroll amount
+              behavior: 'smooth',
+          });
+      });
+  
+      // Right Arrow Scroll
+      scrollRightButton.addEventListener('click', () => {
+          productsGrid.scrollBy({
+              left: 300, // Adjust scroll amount
+              behavior: 'smooth',
+          });
+      });
+  </script>
+  
 </body>
-
 </html>

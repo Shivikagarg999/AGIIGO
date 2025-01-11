@@ -3,7 +3,8 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const Product= require('./models/product')
-
+const User= require('./models/user')
+const bcrypt= require('bcrypt');
 const app = express();
 
 mongoose
@@ -52,12 +53,6 @@ app.get('/products', async (req, res) => {
 app.get('/products/add', (req, res) => {
   res.render('addProduct'); 
 });
-function isAdmin(req, res, next) {
-  if (req.isAuthenticated() && req.user.role === 'admin') {
-      return next();
-  }
-  res.redirect('/login');
-}    
 app.post('/products/add', async (req, res) => {
   try {
     const { name, description, price, category, image } = req.body;
@@ -75,7 +70,66 @@ app.post('/products/add', async (req, res) => {
     res.status(500).send('Error adding product');
   }
 });
+app.get("/login", (req,res)=>{
+  res.render("login")
+})
+app.get("/register", (req,res)=>{
+  res.render("register")
+})
+app.post('/register', async (req, res) => {
+  const { name, email, password, contact, role } = req.body;
 
+  if (!name || !email || !password || !contact) {
+      return res.render('register', { error: 'All fields are required' });
+  }
+
+  try {
+      const existingUser = await User.findOne({ email });
+
+      if (existingUser) {
+          return res.render('register', { error: 'User already exists' });
+      }
+
+      const user = new User({
+          name,
+          email,
+          password,
+          contact,
+          role: role || 'buyer'
+      });
+
+      await user.save();
+
+      res.render('/login');
+  } catch (error) {
+      console.error(error);
+      res.render('register', { error: 'An error occurred, please try again' });
+  }
+});
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  const products = await Product.find(); 
+  if (!email || !password) {
+      return res.render('login', { error: 'Please fill in all fields' });
+  }
+
+  try {
+      const user = await User.findOne({ email });
+      if (!user) {
+          return res.render('login', { error: 'Invalid email or password' });
+      }
+
+      const isMatch = await user.matchPassword(password);
+      if (!isMatch) {
+          return res.render('login', { error: 'Invalid email or password' });
+      }
+      res.render('hellouser', {user, products});  
+
+  } catch (error) {
+      console.error(error);
+      res.render('login', { error: 'An error occurred. Please try again.' });
+  }
+});
 app.use((req, res) => {
   res.status(404).send('Page Not Found');
 });
