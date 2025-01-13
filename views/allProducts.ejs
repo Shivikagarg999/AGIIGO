@@ -106,6 +106,16 @@
       font-size: 1.2rem;
       color: #6c757d;
     }
+    
+.addcart{
+    color: black;
+    padding: 10px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-weight: bold;
+    background-color: rgb(248, 248, 23);
+    text-decoration: none;
+}
   </style>
 </head>
 <body>
@@ -125,7 +135,9 @@
                 <%= '★'.repeat(Math.floor(product.rating)) %>
                 <%= '☆'.repeat(5 - Math.floor(product.rating)) %>
               </p>
-              <button class="product-button">Add to Cart</button>
+              <form action="/cart/add" method="POST" style="display: inline;">
+              <button class="addcart">Add to Cart</button>
+              </form>
             </div>
           <% }); %>
         <% } else { %>

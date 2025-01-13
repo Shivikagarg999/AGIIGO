@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Shopping Cart</title>
+  <!-- Adding FontAwesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    /* General Reset and Styling */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      height: 100%;
+    }
+
+    /* Container for Cart */
+    .cart-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      margin-top: 50px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    /* Cart Item */
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .cart-item img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .cart-item-info {
+      flex: 1;
+      padding-left: 20px;
+    }
+
+    .cart-item-info p {
+      margin: 5px 0;
+    }
+
+    .cart-item-info strong {
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    .remove-btn {
+      background-color: #e04a4a;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    .remove-btn:hover {
+      background-color: #ff5c5c;
+    }
+
+    /* Total Price Section */
+    .total-price {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.2rem;
+      margin-top: 30px;
+      border-top: 2px solid #ddd;
+      padding-top: 20px;
+    }
+
+    .total-price span {
+      font-weight: bold;
+      color: #333;
+    }
+
+    /* Checkout Button */
+    .checkout-btn {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      background-color: #28a745;
+      color: white;
+      font-size: 1.2rem;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 30px;
+      transition: background-color 0.3s ease;
+    }
+
+    .checkout-btn:hover {
+      background-color: #218838;
+    }
+
+    /* Empty Cart Message */
+    .empty-cart {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #777;
+      margin-top: 50px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .cart-item img {
+        width: 80px;
+        height: 80px;
+      }
+
+      .cart-item-info {
+        padding-left: 0;
+      }
+
+      .total-price {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cart-container">
+  <h1>Your Shopping Cart</h1>
+
+  <% if (cart.length === 0) { %>
+    <div class="empty-cart">
+      <p>Your cart is empty. Please add items to your cart.</p>
+    </div>
+  <% } else { %>
+    <div>
+      <% cart.forEach(item => { %>
+        <% if (item.productId) { %>
+          <div class="cart-item">
+            <!-- Product Image -->
+            <img src="<%= item.productId.image || '/default-image.jpg' %>" alt="<%= item.productId.name %>">
+            
+            <div class="cart-item-info">
+              <p><strong><%= item.productId.name %></strong></p>
+              <p>Price: $<%= item.productId.price.toFixed(2) %></p>
+              <p>Quantity: <%= item.quantity %></p>
+              <p>Total: $<%= (item.quantity * item.productId.price).toFixed(2) %></p>
+            </div>
+            
+            <form action="/cart/remove" method="POST" style="display:inline;">
+              <input type="hidden" name="productId" value="<%= item.productId._id %>">
+              <button type="submit" class="remove-btn">
+                <i class="fas fa-trash-alt"></i> Remove
+              </button>
+            </form>
+          </div>
+        <% } else { %>
+          <p>Product not found</p>
+        <% } %>
+      <% }); %>
+    </div>
+
+    <!-- Total Price Section -->
+    <div class="total-price">
+      <span>Total:</span>
+      <span>$<%= cart.reduce((total, item) => total + (item.quantity * (item.productId ? item.productId.price : 0)), 0).toFixed(2) %></span>
+    </div>
+
+    <!-- Checkout Button -->
+    <button class="checkout-btn">Proceed to Checkout</button>
+  <% } %>
+</div>
+
+</body>
+</html>

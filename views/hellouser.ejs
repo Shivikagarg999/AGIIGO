@@ -359,27 +359,17 @@ h2 {
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#categories">Categories</a></li>
                     <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
-                    <% if (user && user.role === 'seller') { %>
-                        <li class="nav-item"><a class="nav-link" href="/products/add">Add Product</a></li>
-                    <% } %>
                     <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
                 </ul>
                 <form class="d-flex ms-3 align-items-center">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-warning me-3" type="submit"><i class="fas fa-search"></i></button>
-                    <a href="#cart" class="btn btn-outline-light position-relative">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            3
-                            <span class="visually-hidden">unread messages</span>
-                        </span>
-                    </a>
                 </form>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section -->     
     <div class="hero-section">
         <div class="container">
             <h1>Welcome, <%= user.name %>!</h1>
