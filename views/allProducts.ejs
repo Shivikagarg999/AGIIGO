@@ -135,8 +135,10 @@
                 <%= '★'.repeat(Math.floor(product.rating)) %>
                 <%= '☆'.repeat(5 - Math.floor(product.rating)) %>
               </p>
+              <!-- Form to add to cart with productId -->
               <form action="/cart/add" method="POST" style="display: inline;">
-              <button class="addcart">Add to Cart</button>
+                <input type="hidden" name="productId" value="<%= product._id %>"> <!-- Hidden productId -->
+                <button class="addcart" type="submit">Add to Cart</button>
               </form>
             </div>
           <% }); %>
@@ -144,11 +146,9 @@
           <p class="no-products-message">No products available at the moment.</p>
         <% } %>
       </div>
-      <!-- <div class="go-back-btn">
-        <a href="/" class="btn">Go Back</a>
-      </div> -->
     </div>
   </section>
+  
 
   <!-- Bootstrap JS and dependencies -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

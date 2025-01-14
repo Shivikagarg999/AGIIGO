@@ -33,8 +33,6 @@ app.use(
     },
   })
 );
-
-
 app.get('/', async (req, res) => {
   try {
     const products = await Product.find(); 
@@ -109,7 +107,6 @@ app.post('/register', async (req, res) => {
       contact,
       role: role || 'buyer',
     });
-
     await user.save();
 
     console.log('User saved:', user);
@@ -187,7 +184,6 @@ app.get('/seller', async (req, res) => {
     res.redirect('/login');  // If no session or wrong role, redirect to login
   }
 });
-
 // Buyer route
 app.get('/buyer', async (req, res) => {
   console.log('Session in /buyer route:', req.session.user);  // Verify session data
@@ -207,34 +203,58 @@ app.get('/buyer', async (req, res) => {
     res.redirect('/login');  // If no session or wrong role, redirect to login
   }
 });
-
+app.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.redirect('/buyer'); // or wherever the user was
+    }
+    res.redirect('/login'); // Redirect to login page after logout
+  });
+});
 app.post('/cart/add', async (req, res) => {
   const { productId, quantity } = req.body;
 
-  if (!req.session.user) {
-    return res.redirect('/login');  // Ensure user is logged in
+  // Check if productId is received
+  if (!productId) {
+    return res.status(400).json({ error: 'Product ID is required' });
   }
 
   try {
-    const user = await User.findById(req.session.user.id); // Find user by session ID
-    const existingProduct = user.cart.find(item => item.productId.toString() === productId);
-
-    if (existingProduct) {
-      // If the product exists, update the quantity
-      existingProduct.quantity += quantity;
-    } else {
-      // If the product doesn't exist, add it to the cart
-      user.cart.push({ productId, quantity });
+    // Fetch the product from the database
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
     }
 
-    await user.save();  // Save the updated cart to the database
+    // Get the user from the session (fetch full user document)
+    const user = await User.findById(req.session.user.id);  // Fetch the full user document
+    if (!user) {
+      return res.status(401).json({ error: 'User not found' });
+    }
 
-    res.redirect('/cart');  // Redirect to the cart page to show updated cart
+    // Ensure productId is valid and exists in the cart
+    const cart = user.cart || [];
+    const existingProductIndex = cart.findIndex(item => item.productId && item.productId.toString() === productId);
+
+    if (existingProductIndex >= 0) {
+      // Update quantity if product already exists in the cart
+      cart[existingProductIndex].quantity += parseInt(quantity, 10);
+    } else {
+      // Add new product to the cart
+      cart.push({ productId, quantity: parseInt(quantity, 10) });
+    }
+
+    // Save updated user cart
+    user.cart = cart;
+    await user.save();  // Now that 'user' is a Mongoose document, this should work
+
+    res.redirect('/buyer');  // Or wherever you want to redirect
   } catch (error) {
     console.error('Error adding product to cart:', error);
-    res.status(500).send('Error adding product to cart');
+    res.status(500).json({ error: 'An error occurred while adding to cart' });
   }
 });
+
 app.get('/cart', async (req, res) => {
   if (!req.session.user) {
     return res.redirect('/login');  // Ensure user is logged in
@@ -250,47 +270,70 @@ app.get('/cart', async (req, res) => {
     res.status(500).send('Error loading cart');
   }
 });
-
 app.post('/cart/remove', async (req, res) => {
   const { productId } = req.body;
 
-  if (!req.session.user) {
-    return res.redirect('/login');  // Ensure user is logged in
-  }
-
   if (!productId) {
-    console.error('No productId provided');
-    return res.status(400).send('No productId provided');
+    return res.status(400).json({ error: 'Product ID is required' });
   }
 
   try {
-    const user = await User.findById(req.session.user.id); // Find the user by session ID
-    console.log('ProductId received:', productId);
+    // Get the user from the session (fetch full user document)
+    const user = await User.findById(req.session.user.id);  // Fetch the full user document
+    if (!user) {
+      return res.status(401).json({ error: 'User not found' });
+    }
 
-    // Use ObjectId.equals for comparison instead of toString()
-    const updatedCart = user.cart.filter(item => {
-      // Convert productId to ObjectId if it’s not already an ObjectId
-      const productObjectId = mongoose.Types.ObjectId(productId);
-      return !item.productId.equals(productObjectId); // Compare using .equals()
-    });
+    // Find the product in the cart and remove it
+    const cart = user.cart || [];
+    const existingProductIndex = cart.findIndex(item => item.productId && item.productId.toString() === productId);
 
-    user.cart = updatedCart;
-    await user.save();
+    if (existingProductIndex === -1) {
+      return res.status(404).json({ error: 'Product not found in cart' });
+    }
 
-    res.redirect('/cart');  // Redirect to the cart page to reflect the changes
+    // Remove the product from the cart
+    cart.splice(existingProductIndex, 1); // Remove the product at the found index
+
+    // Save updated user cart
+    user.cart = cart;
+    await user.save();  // Now that 'user' is a Mongoose document, this should work
+
+    res.redirect('/cart');  // Redirect to cart page after removal
   } catch (error) {
     console.error('Error removing product from cart:', error);
-    res.status(500).send('Error removing product from cart');
+    res.status(500).json({ error: 'An error occurred while removing from cart' });
   }
 });
 
-app.get('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.redirect('/buyer'); // or wherever the user was
+app.post('/register', async (req, res) => {
+  try {
+    const { name, email, password, contact, role } = req.body;
+
+    if (!name || !email || !password || !contact) {
+      return res.render('register', { error: 'All fields are required' });
     }
-    res.redirect('/login'); // Redirect to login page after logout
-  });
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.render('register', { error: 'User already exists' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({
+      name,
+      email,
+      password: hashedPassword,
+      contact,
+      role: role || 'buyer',
+    });
+    await user.save();
+
+    res.render('login');
+  } catch (error) {
+    console.error('Error during registration:', error);
+    res.render('register', { error: 'An error occurred, please try again' });
+  }
 });
 
 app.use((req, res) => {
