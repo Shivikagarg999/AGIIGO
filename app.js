@@ -6,6 +6,7 @@ const Product= require('./models/product')
 const User= require('./models/user')
 const bcrypt= require('bcrypt');
 const app = express();
+const moment = require('moment'); 
 
 
 mongoose
@@ -23,23 +24,42 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(
   session({
-    secret: 'your-secret-key', // Make sure this key is complex enough for security
-    resave: false, // Avoid unnecessary session resaves
-    saveUninitialized: false, // Don't save uninitialized sessions
+    secret: 'your-secret-key', 
+    resave: false,
+    saveUninitialized: false, 
     cookie: {
-      httpOnly: true, // Helps prevent client-side JS from accessing the cookie
-      maxAge: 1000 * 60 * 60 * 24, // Cookie expires after 24 hours
-      secure: false, // Set to false since you're not using HTTPS locally
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24, 
+      secure: false,
     },
   })
 );
+
+
 app.get('/', async (req, res) => {
   try {
+    // Fetch all products
     const products = await Product.find(); 
-    // const trendingProducts = await Product.find({ isTrending: true }) 
-    // .sort({ createdAt: -1 }) 
-    // .limit(5); 
-    res.render('home', { products});
+    
+    // Fetch trending products (limit 5)
+    const trendingProducts = await Product.find({ isTrending: true })
+      .sort({ createdAt: -1 })  // Sort by creation date, descending
+      .limit(3);
+
+    // Calculate the date 5 days ago
+    const fiveDaysAgo = moment().subtract(5, 'days').toDate();
+
+    // Fetch latest products added in the last 5 days (limit 5)
+    const latestProducts = await Product.find({ createdAt: { $gte: fiveDaysAgo } })
+      .sort({ createdAt: -1 })  // Sort by creation date, descending
+      .limit(3);
+
+    res.render('home', {
+      products,
+      trendingProducts,
+      latestProducts
+    });
+
   } catch (error) {
     console.error('Error fetching products:', error);
     res.status(500).send('Internal Server Error');
@@ -47,14 +67,24 @@ app.get('/', async (req, res) => {
 });
 app.get('/products', async (req, res) => {
   try {
-    const products = await Product.find(); 
+    const { category } = req.query;
+    let products;
+
+    if (category) {
+      // Fetch products by category
+      products = await Product.find({ category });
+    } else {
+      // Fetch all products if no category is provided
+      products = await Product.find();
+    }
+
     res.render('allProducts', { products });
-    console.log(products);
   } catch (error) {
-    console.error('Error loading products:', error);
-    res.status(500).send('Error loading products');
+    console.error('Error fetching products:', error);
+    res.status(500).send('Error fetching products');
   }
 });
+
 app.get('/products/add', (req, res) => {
   res.render('addProduct'); 
 });
@@ -131,12 +161,10 @@ app.post('/login', async (req, res) => {
     }
 
 
-    // Compare the plain passwords
     if (user.password !== password) {
       return res.render('login', { error: 'Invalid email or password' });
     }
 
-    // Store user details in session
     req.session.user = {
       id: user._id,
       name: user.name,
@@ -146,7 +174,6 @@ app.post('/login', async (req, res) => {
 
     console.log('Session after login:', req.session);
 
-    // Redirect based on user role
     if (user.role === 'seller') {
       return res.redirect('/seller');
     } else if (user.role === 'buyer') {
@@ -158,14 +185,12 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// isAuthenticated middleware
 const isAuthenticated = (req, res, next) => {
   if (!req.session.user) {  
     return res.redirect('/');
   }
   next();
 };
-// Seller route
 app.get('/seller', async (req, res) => {
   console.log('Session in /seller route:', req.session.user);  // Verify session data
   if (req.session.user && req.session.user.role === 'seller') {
@@ -184,16 +209,32 @@ app.get('/seller', async (req, res) => {
     res.redirect('/login');  // If no session or wrong role, redirect to login
   }
 });
-// Buyer route
 app.get('/buyer', async (req, res) => {
   console.log('Session in /buyer route:', req.session.user);  // Verify session data
   if (req.session.user && req.session.user.role === 'buyer') {
     try {
       // Fetch all products
-      const products = await Product.find();  // Modify this query as needed to fetch specific products for the buyer
+      const products = await Product.find();
+
+      // Calculate the date 5 days ago
+      const fiveDaysAgo = new Date();
+      fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);  // Subtract 5 days
+
+      // Fetch latest products added in the last 5 days (limit 5)
+      const latestProducts = await Product.find({ createdAt: { $gte: fiveDaysAgo } })
+        .sort({ createdAt: -1 })  // Sort by creation date, descending
+        .limit(5);
+
+      // Fetch trending products
+      const trendingProducts = await Product.find({ isTrending: true })
+        .sort({ createdAt: -1 })  // You can change this sorting to prioritize trending logic
+        .limit(5);
+
       res.render('buyerPage', {
         user: req.session.user,  // Send user data
         products: products,      // Send all products
+        latestProducts: latestProducts,  // Send the latest products
+        trendingProducts: trendingProducts  // Send trending products
       });
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -214,47 +255,38 @@ app.get('/logout', (req, res) => {
 app.post('/cart/add', async (req, res) => {
   const { productId, quantity } = req.body;
 
-  // Check if productId is received
   if (!productId) {
     return res.status(400).json({ error: 'Product ID is required' });
   }
 
   try {
-    // Fetch the product from the database
     const product = await Product.findById(productId);
     if (!product) {
       return res.status(404).json({ error: 'Product not found' });
     }
 
-    // Get the user from the session (fetch full user document)
-    const user = await User.findById(req.session.user.id);  // Fetch the full user document
+    const user = await User.findById(req.session.user.id);  
     if (!user) {
       return res.status(401).json({ error: 'User not found' });
     }
 
-    // Ensure productId is valid and exists in the cart
     const cart = user.cart || [];
     const existingProductIndex = cart.findIndex(item => item.productId && item.productId.toString() === productId);
 
     if (existingProductIndex >= 0) {
-      // Update quantity if product already exists in the cart
       cart[existingProductIndex].quantity += parseInt(quantity, 10);
     } else {
-      // Add new product to the cart
       cart.push({ productId, quantity: parseInt(quantity, 10) });
     }
-
-    // Save updated user cart
     user.cart = cart;
-    await user.save();  // Now that 'user' is a Mongoose document, this should work
+    await user.save();  
 
-    res.redirect('/buyer');  // Or wherever you want to redirect
+    res.redirect('/buyer');  
   } catch (error) {
     console.error('Error adding product to cart:', error);
-    res.status(500).json({ error: 'An error occurred while adding to cart' });
+    res.status(500).json({ error: 'You need to login first' });
   }
 });
-
 app.get('/cart', async (req, res) => {
   if (!req.session.user) {
     return res.redirect('/login');  // Ensure user is logged in
@@ -305,7 +337,6 @@ app.post('/cart/remove', async (req, res) => {
     res.status(500).json({ error: 'An error occurred while removing from cart' });
   }
 });
-
 app.post('/register', async (req, res) => {
   try {
     const { name, email, password, contact, role } = req.body;
@@ -333,6 +364,20 @@ app.post('/register', async (req, res) => {
   } catch (error) {
     console.error('Error during registration:', error);
     res.render('register', { error: 'An error occurred, please try again' });
+  }
+});
+app.get('/product/:id', async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+    
+    if (!product) {
+      return res.status(404).send('Product not found');
+    }
+    res.render('product-detail', { product });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
   }
 });
 

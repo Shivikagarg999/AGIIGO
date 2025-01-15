@@ -251,6 +251,8 @@ h2 {
   gap: 20px;
   overflow-x: hidden; 
   white-space: nowrap;
+  align-items: center;
+  justify-content: center;
   padding: 10px 0;
 }
 
@@ -314,7 +316,11 @@ h2 {
   }
 
   .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    flex-direction: column;
+  }
+
+  .scroll-arrow{
+    display: none;
   }
 }
   
@@ -522,7 +528,60 @@ h2 {
         <div class="view-all-container">
             <a href="/products" class="view-all-link">Browse All Products</a>
         </div>
-      </section>       
+      </section>  
+      <section class="products-section" id="products">
+        <h2>Trending Products</h2>
+        <div class="container">
+            <div class="products-grid">
+                <% if (trendingProducts.length > 0) { %>
+                    <% trendingProducts.slice(0, 3).forEach(product => { %> <!-- Limit to 3 products -->
+                        <div class="product-card">
+                            <img src="<%= product.image || '/default-image.jpg' %>" alt="<%= product.name %>" class="product-image">
+                            <h3 class="product-name"><%= product.name %></h3>
+                            <p class="product-description"><%= product.description %></p>
+                            <p class="product-price">$<%= product.price.toFixed(2) %></p>
+                            <p class="product-category">Category: <%= product.category %></p>
+                            <form action="/cart/add" method="POST" style="display: inline;">
+                                <input type="hidden" name="productId" value="<%= product._id %>">
+                                <input type="number" name="quantity" value="1" min="1" required style="display:none;">
+                                <button type="submit" style="display:none;">Add to Cart</button>
+                                <a href="javascript:void(0);" class="addcart" onclick="this.closest('form').submit();">Add to Cart</a>
+                            </form>                      
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>No Products available at the moment.</p>
+                <% } %>
+            </div>
+        </div>
+    </section>
+          <section class="products-section" id="products">
+            <h2>Latest Products</h2>
+            <div class="container">
+                <div class="products-grid">
+                    <% if (latestProducts.length > 0) { %>
+                        <% latestProducts.slice(0, 3).forEach(product => { %> <!-- Limit to 3 products -->
+                            <div class="product-card">
+                                <img src="<%= product.image || '/default-image.jpg' %>" alt="<%= product.name %>" class="product-image">
+                                <h3 class="product-name"><%= product.name %></h3>
+                                <p class="product-description"><%= product.description %></p>
+                                <p class="product-price">$<%= product.price.toFixed(2) %></p>
+                                <p class="product-category">Category: <%= product.category %></p>
+                                <form action="/cart/add" method="POST" style="display: inline;">
+                                    <input type="hidden" name="productId" value="<%= product._id %>">
+                                    <input type="number" name="quantity" value="1" min="1" required style="display:none;">
+                                    <button type="submit" style="display:none;">Add to Cart</button>
+                                    <a href="javascript:void(0);" class="addcart" onclick="this.closest('form').submit();">Add to Cart</a>
+                                </form>                      
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <p>No Products available at the moment.</p>
+                    <% } %>
+                </div>
+            </div>
+        </section>
+           
     <!-- Footer -->
     <footer class="footer py-4 bg-dark text-light">
         <div class="container">
@@ -530,7 +589,7 @@ h2 {
                 <!-- About Section -->
                 <div class="col-md-4 mb-3">
                     <h5>About Us</h5>
-                    <p class="small">Modern Store is your one-stop shop for the latest products in categories ranging from electronics to fashion. Experience quality and convenience like never before.</p>
+                    <p class="small">Agiigo is your one-stop shop for the latest products in categories ranging from electronics to fashion. Experience quality and convenience like never before.</p>
                 </div>
                 <!-- Quick Links Section -->
                 <div class="col-md-4 mb-3">
