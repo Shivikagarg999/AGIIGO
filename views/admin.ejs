@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="/styles.css"> <!-- Link to your stylesheet -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+    .navbar {
+      background-color: #333;
+      padding: 1rem;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 1rem;
+    }
+    .container {
+      padding: 2rem;
+    }
+    .card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .card h3 {
+      margin: 0 0 1rem;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      color: #fff;
+      background-color: rgb(6, 148, 158);
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: rgb(0, 75, 80);
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <h1>Admin Dashboard</h1>
+    <div>
+      <a href="/">Home</a>
+      <a href="/logout" class="btn">Logout</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>Welcome, Admin</h2>
+    <p>Email: <%= user.email %></p>
+
+    <div class="card">
+      <h3>Manage Products</h3>
+      <p>Add, edit, or delete products from the store.</p>
+      <a href="/admin/products" class="btn">Manage Products</a>
+    </div>
+
+    <div class="card">
+      <h3>Manage Users</h3>
+      <p>View or manage registered users on the platform.</p>
+      <a href="/admin/users" class="btn">Manage Users</a>
+    </div>
+
+    <div class="card">
+      <h3>View Orders</h3>
+      <p>Check the orders placed by customers.</p>
+      <a href="#" class="btn">View Orders</a>
+    </div>
+  </div>
+</body>
+</html>

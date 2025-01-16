@@ -7,7 +7,7 @@ const User= require('./models/user')
 const bcrypt= require('bcrypt');
 const app = express();
 const moment = require('moment'); 
-
+require('dotenv').config(); 
 
 mongoose
   .connect('mongodb+srv://agiigo:agiigo123@cluster0.qyodo.mongodb.net/', 
@@ -15,13 +15,10 @@ mongoose
     socketTimeoutMS: 45000})
   .then(() => console.log('MongoDB Connected'))
   .catch((err) => console.error('MongoDB connection error:', err));
-
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use(
   session({
     secret: 'your-secret-key', 
@@ -34,8 +31,6 @@ app.use(
     },
   })
 );
-
-
 app.get('/', async (req, res) => {
   try {
     // Fetch all products
@@ -84,7 +79,6 @@ app.get('/products', async (req, res) => {
     res.status(500).send('Error fetching products');
   }
 });
-
 app.get('/products/add', (req, res) => {
   res.render('addProduct'); 
 });
@@ -111,7 +105,6 @@ app.get('/login', (req, res) => {
   }
   res.render('login');
 });
-
 app.get("/register", (req,res)=>{
   res.render("register")
 })
@@ -184,7 +177,6 @@ app.post('/login', async (req, res) => {
     res.render('login', { error: 'An error occurred. Please try again.' });
   }
 });
-
 const isAuthenticated = (req, res, next) => {
   if (!req.session.user) {  
     return res.redirect('/');
@@ -378,6 +370,83 @@ app.get('/product/:id', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send('Server error');
+  }
+});
+//admin 
+app.get('/admin/login', (req, res) => {
+  if (req.session.user && req.session.user.role === 'admin') {
+    return res.redirect('/admin'); 
+  }
+  res.render('adminlogin', { error: null }); 
+});
+
+app.post('/admin/login', (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+
+    if (email !== process.env.ADMIN_EMAIL) {
+      return res.render('adminlogin', { error: 'Incorrect email' });
+    }
+
+    if (password !== process.env.ADMIN_PASSWORD) {
+      return res.render('adminlogin', { error: 'Incorrect password' });
+    }
+
+    req.session.user = {
+      email: process.env.ADMIN_EMAIL,
+      role: 'admin',
+    };
+
+    return res.redirect('/admin');
+  } catch (error) {
+    console.error('Error during admin login:', error);
+    return res.render('adminlogin', { error: 'An error occurred, please try again' });
+  }
+});
+
+function isAdminLogin(req, res, next) {
+  if (req.session.user && req.session.user.role === 'admin') {
+    return next(); 
+  }
+  res.redirect('/admin/login');
+}
+
+// Admin Dashboard (GET)
+app.get('/admin', isAdminLogin, (req, res) => {
+  res.render('admin', { user: req.session.user }); // Render admin dashboard
+});
+
+// Manage Products Page
+app.get('/admin/products', isAdminLogin, async (req, res) => {
+  try {
+    const products = await Product.find(); // Fetch all products
+    res.render('admin-products', { products });
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).send('Error loading products page');
+  }
+});
+
+// Manage Users Page
+app.get('/admin/users', isAdminLogin, async (req, res) => {
+  try {
+    const users = await User.find(); // Fetch all users
+    res.render('admin-users', { users });
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).send('Error loading users page');
+  }
+});
+
+// View Orders Page
+app.get('/admin/orders', isAdminLogin, async (req, res) => {
+  try {
+    const orders = await Order.find().populate('userId').populate('products.productId'); // Fetch orders
+    res.render('admin-orders', { orders });
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    res.status(500).send('Error loading orders page');
   }
 });
 

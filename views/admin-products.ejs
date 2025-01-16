@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Products</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: white;
+      color: rgb(0, 112, 120);
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: rgb(0, 112, 120);
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    table th, table td {
+      border: 1px solid rgb(0, 112, 120);
+      padding: 10px;
+      text-align: left;
+    }
+
+    table th {
+      background-color: rgb(0, 168, 180);
+      color: white;
+    }
+
+    table tr:nth-child(even) {
+      background-color: rgb(240, 255, 255);
+    }
+
+    table tr:hover {
+      background-color: rgb(0, 168, 180);
+      color: white;
+    }
+
+    a {
+      text-decoration: none;
+      color: white;
+      background-color: rgb(0, 112, 120);
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    a:hover {
+      background-color: rgb(0, 168, 180);
+    }
+
+    .add-product {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 15px;
+      background-color: rgb(0, 112, 120);
+      color: white;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .add-product:hover {
+      background-color: rgb(0, 168, 180);
+    }
+
+    /* Responsive design */
+    @media screen and (max-width: 768px) {
+      table {
+        font-size: 14px;
+      }
+
+      table th, table td {
+        padding: 8px;
+      }
+
+      .add-product {
+        padding: 8px 12px;
+      }
+
+      a {
+        font-size: 12px;
+        padding: 4px 8px;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      h1 {
+        font-size: 24px;
+      }
+
+      table th, table td {
+        padding: 6px;
+      }
+
+      .add-product {
+        width: 100%;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Manage Products</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% products.forEach(product => { %>
+        <tr>
+          <td><%= product.name %></td>
+          <td><%= product.category %></td>
+          <td><%= product.price %></td>
+          <td>
+            <a href="/admin/products/edit/<%= product._id %>">Edit</a>
+            <a href="/admin/products/delete/<%= product._id %>">Delete</a>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <a href="/products/add" class="add-product">Add Product</a>
+</body>
+</html>
