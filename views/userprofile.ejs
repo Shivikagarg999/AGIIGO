@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Update</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+   .dashboard-sidebar {
+  background-color: #f8f9fa;
+  border-right: 1px solid #dee2e6;
+}
+
+.dashboard-sidebar .nav-link {
+  color: #333;
+}
+
+.dashboard-sidebar .nav-link.active {
+  font-weight: bold;
+  color: #d9534f;
+}
+
+.profile-section {
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.profile-section h5 {
+  margin-bottom: 20px;
+}
+
+.btn-save {
+  background-color: #d9534f;
+  color: #fff;
+}
+
+.btn-save:hover {
+  background-color: #c9302c;
+}
+.btnm{
+    background: rgb(0,120,128);
+    color: black;
+    font-weight: bold;
+    padding: 12px;
+    border: 1px solid transparent;
+}
+.navu{
+  color: red;
+  margin: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 17px;
+}
+  </style>
+</head>
+<body>
+    <div class="mt-4 p-5 bg-cust-drk text-center">
+      <h3>My Agiigo Account</h3>
+    </div>  
+  
+    <div class="container my-4">
+      <div class="row">
+  
+        <!-- Sidebar -->
+        <div class="col-md-3 dashboard-sidebar">
+          <div class="text-center p-3">
+            <!-- <img src="image/avatar-2.jpg" alt="User" class="img-fluid rounded-circle"> -->
+            <h6 class="mt-2"><%= user.name %></h6>
+            <p><%= user.email %></p>
+          </div>
+          <ul class="nav flex-column">
+            <!-- <li class="nav-item">
+              <a href="#" class="nav-link">Order <span class="badge bg-secondary float-end">5</span></a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">Wishlist <span class="badge bg-secondary float-end">5</span></a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">Support Tickets <span class="badge bg-secondary float-end">0</span></a>
+            </li>
+            <li class="nav-item mt-3">
+              <h6 class="text-muted">Account Settings</h6>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link active">Profile Info</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">Addresses</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">Payment</a>
+            </li> -->
+            <li class="nav-item">
+              <a href="/logout" class="navu">Logout</a>
+            </li>
+          </ul>
+        </div>
+  
+        <!-- Main Content -->
+        <div class="col-md-9">
+          <!-- Profile Info Section -->
+          <div class="profile-section">
+            <h5>Profile Details</h5>
+            <form>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="firstName" class="form-label">Full Name</label>
+                  <input type="text" class="form-control" id="firstName" value="<%= user.name %>" disabled>
+                </div>
+                <div class="col-md-6">
+                  <label for="email" class="form-label">Email Address</label>
+                  <input type="email" class="form-control" id="email" value="<%= user.email %>" disabled>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="mobile" class="form-label">Mobile Number</label>
+                  <input type="text" class="form-control" id="mobile" value="<%= user.contact %>" disabled>
+                </div>
+                <% if (user.address) { %>
+                  <div class="col-md-6">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="address" value="<%= user.address %>" disabled>
+                  </div>
+                <% } %>
+              </div>
+              <% if (user.state || user.country || user.pincode) { %>
+                <div class="row mb-3">
+                  <% if (user.state) { %>
+                    <div class="col-md-4">
+                      <label for="state" class="form-label">State</label>
+                      <input type="text" class="form-control" id="state" value="<%= user.state %>" disabled>
+                    </div>
+                  <% } %>
+                  <% if (user.country) { %>
+                    <div class="col-md-4">
+                      <label for="country" class="form-label">Country</label>
+                      <input type="text" class="form-control" id="country" value="<%= user.country %>" disabled>
+                    </div>
+                  <% } %>
+                  <% if (user.pincode) { %>
+                    <div class="col-md-4">
+                      <label for="pincode" class="form-label">Pincode</label>
+                      <input type="text" class="form-control" id="pincode" value="<%= user.pincode %>" disabled>
+                    </div>
+                  <% } %>
+                </div>
+              <% } %>
+            </form>
+          </div>
+  
+          <!-- Update Password Section -->
+          <div class="profile-section mt-4">
+            <div class="profile-section">
+                <h5>Edit details</h5>
+                <form action="/account/update" method="POST">
+                  <div class="row mb-3">
+                    <div class="col-md-6">
+                      <label for="name" class="form-label">Full Name</label>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        id="name" 
+                        name="name" 
+                        value="<%= user.name %>" 
+                        required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="email" class="form-label">Email Address</label>
+                      <input 
+                        type="email" 
+                        class="form-control" 
+                        id="email" 
+                        name="email" 
+                        value="<%= user.email %>" 
+                        readonly>
+                    </div>
+                  </div>
+              
+                  <div class="row mb-3">
+                    <div class="col-md-6">
+                      <label for="contact" class="form-label">Mobile Number</label>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        id="contact" 
+                        name="contact" 
+                        value="<%= user.contact %>" 
+                        required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="address" class="form-label">Address</label>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        id="address" 
+                        name="address" 
+                        value="<%= user.address %>">
+                    </div>
+                  </div>
+              
+                  <div class="row mb-3">
+                    <div class="col-md-4">
+                      <label for="city" class="form-label">City</label>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        id="city" 
+                        name="city" 
+                        value="<%= user.city || '' %>">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="state" class="form-label">State</label>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        id="state" 
+                        name="state" 
+                        value="<%= user.state || '' %>">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="pincode" class="form-label">Pincode</label>
+                      <input 
+                        type="number" 
+                        class="form-control" 
+                        id="pincode" 
+                        name="pincode" 
+                        value="<%= user.pincode || '' %>">
+                    </div>
+                  </div>
+              
+                  <button type="submit" class="btnm">Save Changes</button>
+                </form>
+              </div>
+              
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+  
+</html>

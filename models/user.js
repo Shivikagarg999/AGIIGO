@@ -32,10 +32,24 @@ const userSchema = new mongoose.Schema({
       }],
     address: String,
     state: String,
+    city: String,
     country: String,
-    pincode: Number
+    pincode: Number,
+    orders: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Order', // Reference to the Order model
+        },
+      ]
 });
-
+userSchema.methods.getOrders = async function () {
+    try {
+      const orders = await mongoose.model('Order').find({ user: this._id });
+      return orders;
+    } catch (error) {
+      throw new Error('Unable to fetch orders');
+    }
+  };
 
 const User = mongoose.model('User', userSchema);
 

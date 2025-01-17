@@ -12,7 +12,7 @@ require('dotenv').config();
 mongoose
   .connect('mongodb+srv://agiigo:agiigo123@cluster0.qyodo.mongodb.net/', 
   { connectTimeoutMS: 10000, 
-    socketTimeoutMS: 45000})
+   socketTimeoutMS: 45000})
   .then(() => console.log('MongoDB Connected'))
   .catch((err) => console.error('MongoDB connection error:', err));
 app.set('view engine', 'ejs');
@@ -449,6 +449,96 @@ app.get('/admin/orders', isAdminLogin, async (req, res) => {
     res.status(500).send('Error loading orders page');
   }
 });
+app.get('/admin/products/delete/:id', async (req, res) => {
+  const productId = req.params.id; 
+
+  try {
+    const deletedProduct = await Product.findByIdAndDelete(productId);
+
+    if (!deletedProduct) {
+      return res.status(404).send('Product not found');
+    }
+
+    console.log(`Deleted product: ${deletedProduct.name}`);
+    res.redirect('/admin/products'); 
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    res.status(500).send('An error occurred while deleting the product');
+  }
+});
+app.get('/admin/users/delete/:id', async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const deletedUser = await User.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).send('User not found');
+    }
+    res.redirect('/admin/users');
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).send('Error deleting user');
+  }
+});
+app.get('/admin/products/mark-trending/:id', async (req, res) => {
+  try {
+    const productId = req.params.id;
+
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).send('Product not found');
+    }
+    product.isTrending = true;
+    await product.save();
+    res.redirect('/admin/products');  
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+});
+// User Profile Route
+app.get('/profile',isAuthenticated,async (req, res) => {
+  try {
+    if (!req.session.user) {
+      return res.redirect('/login'); // Ensure the user is logged in
+    }
+
+    const userId = req.session.user.id; // Assuming user ID is stored in the session
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    res.render('userprofile', { user });
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    res.status(500).send('Error fetching user profile');
+  }
+});
+app.post('/account/update', async (req, res) => {
+  try {
+    const userId = req.session.user.id; // Assuming session contains user ID
+    const { name, contact, address, city, state, pincode } = req.body;
+
+    // Update user data in the database
+    await User.findByIdAndUpdate(userId, {
+      name,
+      contact,
+      address,
+      city,
+      state,
+      pincode,
+    });
+
+    res.redirect('/profile'); // Redirect back to the account page
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    res.redirect('/account');
+  }
+});
+
 
 app.use((req, res) => {
   res.status(404).send('Page Not Found');

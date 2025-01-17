@@ -7,91 +7,108 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: white;
-      color: rgb(0, 112, 120);
+      background-color: #f7f7f7;
+      color: #007078;
       margin: 0;
       padding: 20px;
     }
-
     h1 {
       text-align: center;
-      color: rgb(0, 112, 120);
+      color: #007078;
       margin-bottom: 20px;
     }
-
+    .back-button {
+      display: inline-block;
+      margin-bottom: 20px;
+      background-color: #007078;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+    .back-button:hover {
+      background-color: #00a8b4;
+    }
     table {
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 20px;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-
     table th, table td {
-      border: 1px solid rgb(0, 112, 120);
-      padding: 10px;
+      border: 1px solid #007078;
+      padding: 12px 15px;
       text-align: left;
     }
-
     table th {
-      background-color: rgb(0, 168, 180);
+      background-color: #00a8b4;
       color: white;
     }
-
     table tr:nth-child(even) {
-      background-color: rgb(240, 255, 255);
+      background-color: #f0ffff;
     }
-
     table tr:hover {
-      background-color: rgb(0, 168, 180);
+      background-color: #00a8b4;
       color: white;
     }
-
     a {
       text-decoration: none;
       color: white;
-      background-color: rgb(0, 112, 120);
-      padding: 5px 10px;
+      background-color: #007078;
+      padding: 8px 12px;
       border-radius: 5px;
-      transition: background-color 0.3s;
+      transition: background-color 0.3s ease;
     }
-
     a:hover {
-      background-color: rgb(0, 168, 180);
+      background-color: #00a8b4;
     }
-
-    /* Responsive design */
+    /* Responsive Design */
     @media screen and (max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
       table {
-        font-size: 14px;
+        border: none;
       }
-
-      table th, table td {
-        padding: 8px;
+      table tr {
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        background-color: white;
+        border-radius: 5px;
       }
-
-      a {
-        font-size: 12px;
-        padding: 4px 8px;
+      table th {
+        display: none;
       }
-    }
-
-    @media screen and (max-width: 480px) {
-      h1 {
-        font-size: 24px;
+      table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border: none;
+        border-bottom: 1px solid #f0f0f0;
       }
-
-      table th, table td {
-        padding: 6px;
+      table td:last-child {
+        border-bottom: none;
       }
-
-      a {
-        font-size: 12px;
-        padding: 4px 8px;
+      table td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #007078;
       }
     }
   </style>
 </head>
 <body>
+  <!-- Back Button -->
+  <a href="javascript:history.back()" class="back-button">Back</a>
+
   <h1>Manage Users</h1>
+
   <table>
     <thead>
       <tr>
@@ -104,14 +121,14 @@
     <tbody>
       <% users.forEach(user => { %>
         <tr>
-          <td><%= user.name %></td>
-          <td><%= user.email %></td>
-          <td><%= user.role %></td>
-          <td>
+          <td data-label="Name"><%= user.name %></td>
+          <td data-label="Email"><%= user.email %></td>
+          <td data-label="Role"><%= user.role %></td>
+          <td data-label="Actions">
             <a href="/admin/users/delete/<%= user._id %>">Delete</a>
           </td>
         </tr>
-      <% }) %>
+      <% }); %>
     </tbody>
   </table>
 </body>

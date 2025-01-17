@@ -103,7 +103,15 @@
         color: #00274D;
         font-size: 1rem;
     }
-
+     .cart{
+        text-decoration: none;
+        color: yellow;
+     }
+     .cart i{
+        color: yellow;
+        font-size: 24px;
+        font-weight: bold;
+     }
     .scroll-btn {
         position: absolute;
         top: 50%;
@@ -161,25 +169,6 @@ h2 {
   padding: 10px 0;
   scroll-behavior: smooth;
 }
-
-
-.products-grid {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  align-items: center;
-}
-.product-card {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  width: 250px;
-  flex-shrink: 0; /* Prevent shrinking */
-  padding: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
 .product-image {
   width: 100%;
   height: 180px;
@@ -238,22 +227,26 @@ h2 {
   letter-spacing: 1px;
 }
 
-/* Grid Layout */
-.products-grid {
-  display: flex;
-  gap: 20px;
-  overflow-x: hidden; 
-  white-space: nowrap;
-  padding: 10px 0;
-}
 
-.product-card {
-  background: #fff;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Flexible number of columns */
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .product-card {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-height: 450px; /* Set a max height */
+    overflow: hidden; /* Prevent overflow when the content is too long */
+  }
 
 .product-card:hover {
   transform: translateY(-10px);
@@ -307,8 +300,9 @@ h2 {
   }
 
   .products-grid {
-   flex-direction: column;
+    flex-direction: column;
   }
+
   .scroll-arrow{
     display: none;
   }
@@ -364,7 +358,16 @@ h2 {
   border-radius: 12px;
   text-decoration: none;
 }
-</style>
+.addcart{
+    color: black;
+    padding: 10px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-weight: bold;
+    background-color: rgb(248, 248, 23);
+    text-decoration: none;
+}
+    </style>
 </head>
 
 <body>
@@ -377,26 +380,22 @@ h2 {
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
+               
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#categories">Categories</a></li>
                     <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-                </ul>
-                <form class="d-flex ms-3 align-items-center">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-warning me-3" type="submit"><i class="fas fa-search"></i></button>
-                    <a href="#cart" class="btn btn-outline-light position-relative">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            3
-                            <span class="visually-hidden">unread messages</span>
-                        </span>
-                    </a>
-                </form>
+                </ul> 
             </div>
+            
+            <form class="d-flex ms-3 align-items-center">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-warning me-3" type="submit"><i class="fas fa-search"></i></button>
+
+            </form>
         </div>
     </nav>
-    
+     
     <!-- Hero Section -->
     <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
@@ -434,7 +433,6 @@ h2 {
           <span class="visually-hidden">Next</span>
       </button>
   </div>
-
 
     <!-- Categories Section -->
     <section class="category-section" id="categories">
@@ -480,18 +478,18 @@ h2 {
             </div>
         </div>
     </section>
-  
+   
     <section class="products-section" id="products">
         <h2>Products</h2>
         <div class="container">
-          <button class="scroll-arrow left-arrow" id="scroll-left">←</button>
+          <div class="container">
             <div class="products-grid">
               <% if (products.length > 0) { %>
-                <% products.forEach(product => { %>
+                <% products.slice(0, 10).forEach(product => { %>
                   <div class="product-card">
                     <img src="<%= product.image || '/default-image.jpg' %>" alt="<%= product.name %>" class="product-image">
                     <h3 class="product-name"><%= product.name %></h3>
-                    <p class="product-description"><%= product.description %></p>
+                    <p class="product-description"><%= product.description.length > 100 ? product.description.slice(0, 100) + '...' : product.description %></p>
                     <p class="product-price">$<%= product.price.toFixed(2) %></p>
                     <p class="product-category">Category: <%= product.category %></p>
                   </div>
@@ -499,9 +497,10 @@ h2 {
               <% } else { %>
                 <p>No products available at the moment.</p>
               <% } %>
+            </div>
           </div>
-          <button class="scroll-arrow right-arrow" id="scroll-right">→</button>
         </div>
+        
         <div class="view-all-container">
             <a href="/products" class="view-all-link">Browse All Products</a>
         </div>
@@ -518,7 +517,13 @@ h2 {
                             <h3 class="product-name"><%= product.name %></h3>
                             <p class="product-description"><%= product.description %></p>
                             <p class="product-price">$<%= product.price.toFixed(2) %></p>
-                            <p class="product-category">Category: <%= product.category %></p>                   
+                            <p class="product-category">Category: <%= product.category %></p>
+                            <form action="/cart/add" method="POST" style="display: inline;">
+                                <input type="hidden" name="productId" value="<%= product._id %>">
+                                <input type="number" name="quantity" value="1" min="1" required style="display:none;">
+                                <button type="submit" style="display:none;">Add to Cart</button>
+                                <a href="javascript:void(0);" class="addcart" onclick="this.closest('form').submit();">Add to Cart</a>
+                            </form>                      
                         </div>
                     <% }); %>
                 <% } else { %>
@@ -538,7 +543,13 @@ h2 {
                                 <h3 class="product-name"><%= product.name %></h3>
                                 <p class="product-description"><%= product.description %></p>
                                 <p class="product-price">$<%= product.price.toFixed(2) %></p>
-                                <p class="product-category">Category: <%= product.category %></p>                    
+                                <p class="product-category">Category: <%= product.category %></p>
+                                <form action="/cart/add" method="POST" style="display: inline;">
+                                    <input type="hidden" name="productId" value="<%= product._id %>">
+                                    <input type="number" name="quantity" value="1" min="1" required style="display:none;">
+                                    <button type="submit" style="display:none;">Add to Cart</button>
+                                    <a href="javascript:void(0);" class="addcart" onclick="this.closest('form').submit();">Add to Cart</a>
+                                </form>                      
                             </div>
                         <% }); %>
                     <% } else { %>
@@ -548,7 +559,6 @@ h2 {
             </div>
         </section>
            
-
     <!-- Footer -->
     <footer class="footer py-4 bg-dark text-light">
         <div class="container">
